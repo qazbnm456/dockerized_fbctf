@@ -21,6 +21,8 @@ This repo aims to dockerized [fbctf](https://github.com/facebook/fbctf).
 2. `docker run -p 80:80 -p 443:443 --rm fbctf`
 3. Go to http://localhost and you should be able to view the website :)
 
+p.s. I delete HSTS option cause we are in dev mode, which doesn't help a lot.
+
 <a name="todo"></a>
 ## TODO
 
