@@ -1,6 +1,3 @@
 #!/bin/bash
 
-service nginx start
-service mysql start
-service hhvm start
-
+service nginx restart && service mysql start && service hhvm start
