@@ -1,4 +1,4 @@
-FROM phusion/baseimage:latest
+FROM qazbnm456/fbctf_base:latest
 MAINTAINER Lobsiinvok lobsiinvok@tdohacker.org
 
 ENV HOME /root
