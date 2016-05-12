@@ -11,7 +11,7 @@ cd $PWD \
     && cd letsencrypt.sh && echo domain.com > domains.txt \
     && mkdir -p /var/www/fbctf/src/.well-known/acme-challenge \
     && chmod 755 /var/www/fbctf \
-    && mv /var/www/fbctf/extra/config.sh . \
+    && mv /root/fbctf/config.sh . \
     && echo "Enable the http endpoint" \
     && ln -s /etc/nginx/sites-available/http_fbctf.conf /etc/nginx/sites-enabled/http_fbctf.conf \
     && echo "Start nginx service..." \

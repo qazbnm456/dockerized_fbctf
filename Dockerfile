@@ -15,6 +15,7 @@ WORKDIR $HOME/fbctf
 RUN ./extra/provision.sh dev `pwd`
 RUN [ "$MODE" = "prod" ] && rm /etc/nginx/sites-available/fbctf.conf || true
 
+ADD config.sh $HOME/fbctf/config.sh
 ADD http_fbctf.conf /etc/nginx/sites-available/http_fbctf.conf
 ADD https_fbctf.conf /etc/nginx/sites-available/https_fbctf.conf
 RUN sed -i 's/domain.com/'$DOMAIN'/g' /etc/nginx/sites-available/http_fbctf.conf \

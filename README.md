@@ -21,7 +21,7 @@ Default dev mode account: `admin` && `password`
 <a name="image"></a>
 ## Image
 
-This image use [fbctf_base](https://github.com/qazbnm456/fbctf_base) as its base image, and support dev and prod mode now :D
+This image use [fbctf_base](https://hub.docker.com/r/qazbnm456/fbctf_base/) as its base image, and support dev and prod mode now :D
 
 <a name="howto"></a>
 ## HowTo
