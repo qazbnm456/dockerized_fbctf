@@ -12,9 +12,9 @@ Default account: `admin` && `password`
 
 ##**Table of contents**
 
- * [Image](#image)
- * [Build](#build)
- * [TODO](#todo)
+#### [Image](#image)
+#### [Build](#build)
+#### [TODO](#todo)
 
 ---------------------------------------
 
