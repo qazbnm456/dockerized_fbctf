@@ -49,8 +49,12 @@ function import_empty_db() {
   mysql -u "$__user" --password="$__pwd" "$__db" -e "INSERT INTO teams (name, password_hash, admin, protected, logo, created_ts) VALUES('admin', '$HASH', 1, 1, 'admin', NOW());"
 }
 
-# Database creation
-import_empty_db "root" "$P_ROOT" "$DB" "$CTF_PATH" "$MODE"
+# Database creation (Don't erase whole database if it exists). From: https://github.com/AlexGaspar/docker-fbctf/blob/master/entrypoint.sh#L32-37
+if $(mysqlshow -u root --password=$P_ROOT $DB &> /dev/null); then
+  echo "Database already created... skiping creation..."
+else
+  import_empty_db "root" "$P_ROOT" "$DB" "$CTF_PATH" "$MODE"
+fi
 
 exit 0
 

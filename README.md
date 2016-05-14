@@ -8,6 +8,8 @@ Default dev mode account: `admin` && `password`
  [fbctf](https://github.com/facebook/fbctf) |
  [dockerized_fbctf](https://hub.docker.com/r/qazbnm456/dockerized_fbctf/)
 
+[![asciicast](https://asciinema.org/a/45614.png)](https://asciinema.org/a/45614)
+
 ---------------------------------------
 
 ##**Table of contents**
