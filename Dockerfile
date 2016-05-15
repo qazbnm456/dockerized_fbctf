@@ -29,7 +29,7 @@ RUN [ "$MODE" = "dev" ] && rm /etc/my_init.d/01_setup_lets_encrypt.sh || true
 RUN [ "$MODE" = "prod" ] && sed -i 's/domain.com/'$DOMAIN'/g' /etc/my_init.d/01_setup_lets_encrypt.sh || true
 RUN sed -i 's/mode_arg/'$MODE'/g' /etc/my_init.d/03_import_empty_db.sh
 
-RUN mkdir /etc/service/log_colletor
-COPY log_colletor.sh /etc/service/log_colletor/run
+RUN mkdir /etc/service/log_forwarding
+COPY log_forwarding.sh /etc/service/log_forwarding/run
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
