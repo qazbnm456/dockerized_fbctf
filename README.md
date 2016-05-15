@@ -1,41 +1,66 @@
-# Dockerized image for FBCTF
+# Dockerized image for FBCTF (Multi Containers Version)
 
-This is the Git repo of the [dockerized_fbctf](https://hub.docker.com/r/qazbnm456/dockerized_fbctf/) image. It's more easier for you to run fbctf in dev or prod mode.
-
-Default dev mode account: `admin` && `password`
+This is the Git repo of the [dockerized_fbctf:multi_containers](https://hub.docker.com/r/qazbnm456/dockerized_fbctf/) image. It's more easier for you to setup fbctf with other orchestration.
 
 **Relevant links:**
- [fbctf](https://github.com/facebook/fbctf) |
- [dockerized_fbctf](https://hub.docker.com/r/qazbnm456/dockerized_fbctf/)
-
-[![asciicast](https://asciinema.org/a/45614.png)](https://asciinema.org/a/45614)
+ [facebook/fbctf](https://github.com/facebook/fbctf) |
+ [AlexGaspar/docker-fbctf](https://github.com/AlexGaspar/docker-fbctf) |
+ [alexgaspar/fbctf](https://hub.docker.com/r/alexgaspar/fbctf/) | 
+ [qazbnm456/dockerized_fbctf](https://hub.docker.com/r/qazbnm456/dockerized_fbctf/)
 
 ---------------------------------------
 
 ##**Table of contents**
 
-#### [Image](#image)
-#### [Build](#build)
-#### [TODO](#todo)
+#### [Quick Start](#start)
+#### [Thanks](#thanks)
 
 ---------------------------------------
 
-<a name="image"></a>
-## Image
+<a name="start"></a>
+## Quick Start
 
-This image use [fbctf_base](https://hub.docker.com/r/qazbnm456/fbctf_base/) as its base image, and support dev and prod mode now.
-All you need to do is `docker pull qazbnm456/dockerized_fbctf` and run `docker run -p 80:80 -p 443:443 --rm qazbnm456/dockerized_fbctf`. :D
+fbctf needs to be server over https, so by default it would generate a self-signed certificate, if you want to use your own certificate you can turn this off by setting $SSL to false, then fbctf container will only server request over :80, so you can do the SSL termination where ever you prefer.
 
-<a name="build"></a>
-## Build
+Using docker-compose
 
-### If you want to build it manually
+```
+docker-compose up
+```
 
-1. Simply clone this repo and cd to it, then `docker build -t="dockerized_fbctf" .`, and it will build fbctf in dev mode. If you want build fbctf in prod mode, `docker build --build-arg MODE=prod --build-arg DOMAIN=YOUR_DOMAIN -t="dockerized_fbctf" .`.
-2. `docker run -p 80:80 -p 443:443 --rm dockerized_fbctf`
-3. Go to http://localhost and you should be able to play with fbctf :)
+Step 1. Launch a mysql container
 
-<a name="todo"></a>
-## TODO
+```
+docker run --name fbctf-mysql -d \
+    --env MYSQL_ROOT_PASSWORD=root \
+    --env MYSQL_DATABASE=fbctf \
+    --env MYSQL_USER=fbctf --env MYSQL_PASSWORD=fbctf \
+    --volume /opt/docker/fbctf/mysql:/var/lib/mysql \
+    mysql:5.5
+```
 
- - Merging into upstreamm. Track the [PR](https://github.com/facebook/fbctf/pull/36).
+Step 2. Launch a memcached container
+
+```
+docker run --name fbctf-memcached -d memcached
+```
+
+Step 3. Launch the fbctf container
+
+```
+docker run --name fbctf -d \
+	-p 10080:80 \
+	--env MYSQL_USER=fbctf \
+	--env MYSQL_PASSWORD=fbctf \
+	--env MYSQL_PORT=3306 \
+	--env MYSQL_DATABASE=fbctf \
+	--env MEMCACHED_PORT=11211 \
+	--link fbctf-memcached:memcached \
+	--link fbctf-mysql:mysql \
+	qazbnm456/dockerized_fbctf:multi_containers
+```
+
+<a name="thanks"></a>
+## Thanks
+
+Due to a great suggestion mentioned [here](https://github.com/facebook/fbctf/pull/36), [AlexGaspar](https://github.com/AlexGaspar) and I work together with the concept of splitting the resources into multiple containers. I modify some code to fit my needs here, and you may find original one: [AlexGaspar/docker-fbctf](https://github.com/AlexGaspar/docker-fbctf).
