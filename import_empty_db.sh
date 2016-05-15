@@ -51,7 +51,7 @@ function import_empty_db() {
 
 # Database creation (Don't erase whole database if it exists). From: https://github.com/AlexGaspar/docker-fbctf/blob/master/entrypoint.sh#L32-37
 if $(mysqlshow -u root --password=$P_ROOT $DB &> /dev/null); then
-  echo "Database already created... skiping creation..."
+  echo "Database already created... skipping creation..."
 else
   import_empty_db "root" "$P_ROOT" "$DB" "$CTF_PATH" "$MODE"
 fi
