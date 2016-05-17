@@ -1,6 +1,9 @@
 #!/bin/bash
 
-source "$CTF_PATH/extra/lib.sh"
+P_ROOT="root"
+CTF_PATH="/var/www/fbctf"
+
+source "$CTF_PATH/import_empty_db.sh"
 
 # Make attachments folder world writable
 chmod 777 "$CTF_PATH/src/data/attachments" \
@@ -14,7 +17,7 @@ cat "$CTF_PATH/extra/hhvm.conf" | sed "s|CTFPATH|$CTF_PATH/|g" | tee /etc/hhvm/s
 chown -R www-data:www-data /var/www/*
 rm /etc/nginx/sites-enabled/*
 
-if ${SSL:=true}; then
+if ${SSL_SELF_SIGNED:=true}; then
   log "Generating self-signed certificate..."
   __country=${SSL_COUNTRY:-"UK"}
   __city=${SSL_CITY:-"London"}
@@ -31,7 +34,7 @@ if ${SSL:=true}; then
     -subj "/C=$__country/ST=NRW/L=$__city/O=My Inc/OU=DevOps/CN=www.$__url/emailAddress=$__email"
   openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
   openssl dhparam -out dhparam.pem 2048
-  cd - # restore directory
+  cd - > /dev/null # restore directory
 
   ln -s /etc/nginx/sites-available/http_fbctf.conf /etc/nginx/sites-enabled/http_fbctf.conf
   ln -s /etc/nginx/sites-available/https_fbctf.conf /etc/nginx/sites-enabled/https_fbctf.conf
@@ -56,7 +59,7 @@ done;
 if $(mysqlshow -u $MYSQL_USER --password=$MYSQL_PASSWORD $MYSQL_DATABASE &> /dev/null); then
   log "Database already created... skipping creation..."
 else
-  import_empty_db "$MYSQL_USER" "$MYSQL_PASSWORD" "$MYSQL_DATABASE" "$CTF_PATH" "prod"
+  import_empty_db "root" "$P_ROOT" "$MYSQL_USER" "$MYSQL_PASSWORD" "$MYSQL_DATABASE" "$CTF_PATH" "prod"
 fi
 
 # Configuring settings.ini

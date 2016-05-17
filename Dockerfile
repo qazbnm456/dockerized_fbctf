@@ -29,7 +29,7 @@ COPY fbctf.conf /etc/nginx/sites-available/fbctf.conf
 COPY http_fbctf.conf /etc/nginx/sites-available/http_fbctf.conf
 COPY https_fbctf.conf /etc/nginx/sites-available/https_fbctf.conf
 
-COPY ["settings.env.ini", "entrypoint.sh", "./"]
+COPY ["settings.env.ini", "entrypoint.sh", "import_empty_db.sh", "./"]
 
 ENTRYPOINT ["./entrypoint.sh"]
 
