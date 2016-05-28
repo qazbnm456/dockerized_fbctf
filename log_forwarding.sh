@@ -1,5 +1,8 @@
 #!/bin/bash
-
-# Forward access and error logs to docker log collector.
-exec less +F /var/log/nginx/access.log
-exec less +F /var/log/nginx/error.log
+# Forwards the Nginx access.log to the Docker logs.
+set -e
+if [[ -e /var/log/nginx/access.log ]]; then
+        exec tail -F /var/log/nginx/access.log
+else
+        exec sleep 10
+fi
